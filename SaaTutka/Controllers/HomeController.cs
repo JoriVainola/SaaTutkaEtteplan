@@ -15,7 +15,7 @@ namespace SaaTutka.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            string API_KEY = "LISÄÄ API KEY TÄHÄN"; 
+            string API_KEY = "LIITÄ API KEY TÄHÄN"; 
             Dictionary<string,string> cityIDs = new Dictionary<string, string>() {
                 { "Tampere","634964"}, 
                 { "Jyväskylä","655195"}, 
@@ -31,7 +31,7 @@ namespace SaaTutka.Controllers
                 ForecastOutputModel forecastOutput = new ForecastOutputModel();
                 using (var httpClient = new HttpClient())
                 {
-                    string CURRENT_URL = "http://api.openweathermap.org/data/2.5/forecast?id=" + city.Value + "&appid =" + API_KEY;
+                    string CURRENT_URL = "http://api.openweathermap.org/data/2.5/forecast?id=" + city.Value + "&appid=" + API_KEY;
                     using (var response = await httpClient.GetAsync(CURRENT_URL))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
