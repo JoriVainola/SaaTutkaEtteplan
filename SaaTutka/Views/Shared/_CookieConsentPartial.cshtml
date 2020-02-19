@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Http.Features
+
+@{
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var showBanner = !consentFeature?.CanTrack ?? false;
+    var cookieString = consentFeature?.CreateConsentCookie();
+}
+
+@if (showBanner)
+{
+    <nav id="cookieConsent" class="navbar navbar-default navbar-fixed-top" role="alert"  style="background-color: #FFFFFF">
+        <div class="container" style="background-color: #FFFFFF">
+          
+           <p style="font-size:23pt; text-align:center">Säätutka</p>
+        </div>
+    </nav>
+}

@@ -1,0 +1,166 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Headers
+@model List<CityWeatherModel>;
+
+<body style="background-color: #F8F9FA">
+    <div class="col-lg-12">
+        <br />
+        <select id="citySelector" onchange="showSelected()" style="width:100%; padding:5px; border-radius: 5px; border-color:#E6E6E6">
+            <option value="kaikki">Kaikki kaupungit</option>
+            @foreach (var City in Model)
+            {
+                <option value="@City.Name">@City.Name</option>
+            }
+
+        </select>
+    </div>
+
+    @foreach (var City in Model)
+    {
+        //Tulostetaan isomman ikkunan sisältö
+        <div id="@City.Name" class="cityinfo col-lg-4 col-md-6" style="margin-bottom:30px; margin-top:15px">
+            <div class="col-lg-12 LightGreyBorderRounded" style="background-color:white">
+                <table style="width: 100%">
+                    <tr>
+                        <td>
+                            <p class="DarkText" style="margin-bottom:0; font-size:19px">@City.Name </p>
+                            <p class="LightGreyText">@City.Forecasts[0].WeatherDescription</p>
+                        </td>
+                        <td class="DarkText" style="float:right; font-size:26px">
+                            <img style="height:50%; width:auto" src="@City.Forecasts[0].weatherIcon"> 
+                            @City.Forecasts[0].Temperature.ToString("0") °C
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="DarkText" style="font-size:15px; margin-bottom:0">@City.Forecasts[0].Month</p>
+                            <p class="LightGreyText" style="font-size:13px">@City.Forecasts[0].DateNow.ToString("HH:mm")</p>
+                        </td>
+                        <td style="text-align:right">
+                            <p class="LightGreyText" style="margin:0">Wind: @City.Forecasts[0].Wind.ToString("0.0") m/s</p>
+                            <p class="LightGreyText" style="margin:0">Hymidity: @City.Forecasts[0].Humidity %</p>
+                            <p class="LightGreyText">Precitipation (3 h): @City.Forecasts[0].Precitipation.ToString("0.0") mm</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            @*Tulostetaan 5 pienempää ikkunaa*@
+            <div class="col-lg-12" style="margin-top:5px; padding:0; padding-top:5px">
+                <table style="width: 100%">
+                    <tr>
+                        @*Vasemmaisin ikkuna*@
+                        <td style="text-align:center; padding-right:5px">
+                            <div class="LightGreyBorder" style="border-top-left-radius: 5px;
+                                border-top-right-radius: 5px;
+                                background-color: white;
+                                padding-top:6px">
+                                <p class="LightGreyText" style="font-size: 13px">@City.Forecasts[1].DateNow.ToString("HH:mm")</p>
+                                <img style="max-height:50%; max-width:50%" src="@City.Forecasts[1].weatherIcon">
+                                <p style="font-size:15px;">@City.Forecasts[1].Temperature.ToString("0") °C</p>
+                            </div>
+                            <div class="LightGreyBorder" style="border-bottom-left-radius: 5px; border-bottom-right-radius:5px; background-color:#E5F6FD; padding-top:6px">
+                                <p class="LightGreyText" style="margin:0; font-size:13px">@City.Forecasts[1].Wind.ToString("0.0") m/s</p>
+                                <p class="LightGreyText" style="margin:0; font-size:13px">@City.Forecasts[1].Humidity %</p>
+                                <p class="LightGreyText" style="font-size:13px">@City.Forecasts[1].Precitipation.ToString("0.0") mm</p>
+                            </div>
+                        </td>
+
+                        @*Keskiikkunat*@
+                        @foreach (var forecast in City.Forecasts.Skip(1).TakeLast(3))
+                        {
+
+                            <td style="text-align:center; padding: 0 5px">
+                                <div class="LightGreyBorder"  style="border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: white; padding-top: 6px">
+                                    <p class="LightGreyText" style="font-size: 13px">@forecast.DateNow.ToString("HH:mm")</p>
+                                    <img style="max-height:50%; max-width:50%" src="@forecast.weatherIcon">
+                                    <p style="font-size:15px;">@forecast.Temperature.ToString("0") °C</p>
+
+                                </div>
+                                <div class="LightGreyBorder" style="border-bottom-left-radius: 5px; border-bottom-right-radius:5px; background-color:#E5F6FD; padding-top:6px">
+                                    <p class="LightGreyText" style="margin:0; font-size:13px">@forecast.Wind.ToString("0.0") m/s</p>
+                                    <p class="LightGreyText" style="margin:0; font-size:13px">@forecast.Humidity %</p>
+                                    <p class="LightGreyText" style="font-size:13px">@forecast.Precitipation.ToString("0.0") mm</p>
+                                </div>
+                            </td>
+
+                        }
+
+                        @*Oiken puolimmaisin ikkuna*@
+                        <td style="text-align:center; padding-left:5px">
+                            <div class="LightGreyBorder" style="border-top-left-radius: 5px;
+                                border-top-right-radius: 5px;
+                                background-color: white;
+                                padding-top:6px">
+                                <p class="LightGreyText" style="font-size: 13px">@City.Forecasts[1].DateNow.ToString("HH:mm")</p>
+                                <img style="max-height:50%; max-width:50%" src="@City.Forecasts[1].weatherIcon">
+                                <p style="font-size:15px;">@City.Forecasts[1].Temperature.ToString("0") °C</p>
+
+                            </div>
+                            <div class="LightGreyBorder" style="border-bottom-left-radius: 5px; border-bottom-right-radius:5px; background-color:#E5F6FD; padding-top:6px">
+
+                                <p class="LightGreyText" style="margin:0; font-size:13px">@City.Forecasts[1].Wind.ToString("0.0") m/s</p>
+                                <p class="LightGreyText" style="margin:0; font-size:13px">@City.Forecasts[1].Humidity %</p>
+                                <p class="LightGreyText" style="font-size:13px">@City.Forecasts[1].Precitipation.ToString("0.0") mm</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    }
+
+
+</body>
+
+
+
+<style>
+    .LightGreyText {
+        color: #70757A;
+    }
+
+    .DarkText {
+        color: #262626;
+    }
+
+    .LightGreyBorderRounded{
+        border: 1px solid #E6E6E6;
+        border-radius:5px
+    }
+
+    .LightGreyBorder{
+         border: 1px solid #E6E6E6;
+    }
+
+    body {
+      font-family: Arial;
+    }
+</style>
+
+
+<script>
+    function changeAll(visible) {
+        var array  = document.getElementsByClassName("cityinfo");
+        for(i = 0; i < array.length; i++)
+        {
+            array[i].style.display = visible;
+        }
+    }
+
+
+    function showSelected() {
+        var selector = document.getElementById("citySelector");
+        var value = selector.options[selector.selectedIndex].value;
+        if (value == "kaikki") {
+            changeAll("block");
+        }
+        else {
+            changeAll("none");
+            var city = document.getElementById(value);
+            city.style.display = "block";
+        }
+
+    }
+</script>
